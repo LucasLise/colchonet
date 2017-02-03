@@ -12,26 +12,25 @@ media: "all",
 <%= csrf_meta_tags %>
 </head>
 <body>
-<header>
-<div id="header-wrap">
-<h1><%= link_to "colcho.net", root_path %> </h1>
-<nav>
-<ul>
-<li><%= link_to "Quartos", rooms_path %> </li>
-<li><%= link_to "Cadastro", new_user_path %> </li>
-</ul>
+  <header>
+     <div id="header-wrap">
+       <h1><%= link_to "colcho.net", root_path %></h1>
+       <% if user_signed_in? %>
+         <%= render 'layouts/user_navbar' %>
+       <% else %>
+         <%= render 'layouts/visitor_navbar' %>
+       <% end %>
+     </div>
+   </header>
+   <div id="content">
+     <% if notice.present? %>
+       <p id="notice"><%= notice %></p>
+     <% end %>
+     <% if alert.present? %>
+       <p id="alert"><%= alert %></p>
+     <% end %>
 
-</nav>
-</div>
-</header>
-<div id="content">
-<% if notice.present? %>
-<p id="notice"><%= notice %> </p>
-<% end %>
-<% if alert.present? %>
-<p id="alert"><%= alert %> </p>
-<% end %>
-<%= yield %>
-</div>
+     <%= yield %>
+   </div>
 </body>
 </html>

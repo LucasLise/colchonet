@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
 
+
+  before_action :require_no_authentication, only: [:new, :create]
+  before_action :can_change, only: [:edit, :update]
+  
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
@@ -23,8 +27,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     if @user.save
+      Signup.confirm_email(@user).deliver
       redirect_to @user,
       notice: 'Cadastro criado com sucesso!'
     else
@@ -39,5 +44,14 @@ class UsersController < ApplicationController
     require(:user).
       permit(:email, :full_name, :location, :password,
         :password_confirmation, :bio)
+  end
+
+  def can_change
+    unless user_signed_in? && current_user == user
+      redirect_to user_path(params[:id])
+    end
+  end
+  def user
+    @user ||= User.find(params[:id])
   end
 end
