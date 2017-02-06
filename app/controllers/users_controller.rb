@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   before_action :require_no_authentication, only: [:new, :create]
   before_action :can_change, only: [:edit, :update]
-  
+
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
@@ -51,6 +51,7 @@ class UsersController < ApplicationController
       redirect_to user_path(params[:id])
     end
   end
+  
   def user
     @user ||= User.find(params[:id])
   end

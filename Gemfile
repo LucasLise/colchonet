@@ -7,6 +7,8 @@ end
 
 ruby '2.3.3'
 
+gem "font-awesome-rails"
+
 gem 'bcrypt-ruby', '~> 3.1.2'
 
 
